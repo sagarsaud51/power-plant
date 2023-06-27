@@ -1,0 +1,67 @@
+{
+  "info": {
+    "_postman_id": "f378c937-9ff2-45d2-b3cd-7cf47adbecc4",
+    "name": "PowerPlant",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4004667"
+  },
+  "item": [
+    {
+      "name": "Post Power Plants",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n    {\r\n        \"name\": \"Cannington\",\r\n        \"postcode\": \"6107\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Midland\",\r\n        \"postcode\": \"6057\",\r\n        \"capacity\": 50500\r\n    },\r\n    {\r\n        \"name\": \"Hay Street\",\r\n        \"postcode\": \"6000\",\r\n        \"capacity\": 23500\r\n    },\r\n    {\r\n        \"name\": \"Mount Adams\",\r\n        \"postcode\": \"6525\",\r\n        \"capacity\": 12000\r\n    },\r\n    {\r\n        \"name\": \"Koolan Island\",\r\n        \"postcode\": \"6733\",\r\n        \"capacity\": 10000\r\n    },\r\n    {\r\n        \"name\": \"Armadale\",\r\n        \"postcode\": \"6992\",\r\n        \"capacity\": 25000\r\n    },\r\n    {\r\n        \"name\": \"Lesmurdie\",\r\n        \"postcode\": \"6076\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Kalamunda\",\r\n        \"postcode\": \"6076\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Carmel\",\r\n        \"postcode\": \"6076\",\r\n        \"capacity\": 36000\r\n    },\r\n    {\r\n        \"name\": \"Bentley\",\r\n        \"postcode\": \"6102\",\r\n        \"capacity\": 85000\r\n    },\r\n    {\r\n        \"name\": \"Akunda Bay\",\r\n        \"postcode\": \"2084\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Werrington County\",\r\n        \"postcode\": \"2747\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Bagot\",\r\n        \"postcode\": \"0820\",\r\n        \"capacity\": 27000\r\n    },\r\n    {\r\n        \"name\": \"Yirrkala\",\r\n        \"postcode\": \"0880\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"University of Melbourne\",\r\n        \"postcode\": \"3010\",\r\n        \"capacity\": 85000\r\n    },\r\n    {\r\n        \"name\": \"Norfolk Island\",\r\n        \"postcode\": \"2899\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Ootha\",\r\n        \"postcode\": \"2875\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Kent Town\",\r\n        \"postcode\": \"5067\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Northgate Mc\",\r\n        \"postcode\": \"9464\",\r\n        \"capacity\": 13500\r\n    },\r\n    {\r\n        \"name\": \"Gold Coast Mc\",\r\n        \"postcode\": \"9729\",\r\n        \"capacity\": 50000\r\n    }\r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:8080/api/power",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "power"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Search Power By postcode range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "localhost:8080/api/power?fromPostcode=0&toPostcode=9000",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "power"
+          ],
+          "query": [
+            {
+              "key": "fromPostcode",
+              "value": "0"
+            },
+            {
+              "key": "toPostcode",
+              "value": "9000"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
