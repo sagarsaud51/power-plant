@@ -17,6 +17,7 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
 
+    // Bean validation error controller advice
     @ExceptionHandler(ConstraintViolationException.class)
     public final ResponseEntity<MessageResponseDTO<?>> handleGeneralExceptions(Exception ex) {
         List<String> errors = Collections.singletonList(ex.getMessage());

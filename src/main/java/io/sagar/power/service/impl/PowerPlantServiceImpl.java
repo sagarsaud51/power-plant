@@ -31,6 +31,7 @@ public class PowerPlantServiceImpl implements PowerPlantService {
     private PowerPlantRepository powerPlantRepository;
 
 
+    // to add power plant data in db
     @Override
     public ResponseEntity<?> addPowerPlant(List<PowerPlantRequestDTO> requestDTOS) {
         try {
@@ -55,6 +56,7 @@ public class PowerPlantServiceImpl implements PowerPlantService {
         }
     }
 
+    // Search Power Plant by postcode range
     @Override
     public ResponseEntity<?> getPowerRangeByPostcode(String fromPostcode, String toPostcode) {
         try {
