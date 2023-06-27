@@ -5,6 +5,7 @@ import io.sagar.power.dto.PowerPlantRangeResponseDTO;
 import io.sagar.power.dto.PowerPlantRequestDTO;
 import io.sagar.power.dto.PowerPlantResponseDTO;
 import io.sagar.power.entity.PowerPlant;
+import io.sagar.power.exceptions.PowerException;
 import io.sagar.power.repository.PowerPlantRepository;
 import io.sagar.power.service.PowerPlantService;
 import io.sagar.power.utils.ResponseUtils;
@@ -39,9 +40,15 @@ public class PowerPlantServiceImpl implements PowerPlantService {
 //            if (!powerPlantsIds.isEmpty()) {
 //                throw new PowerException("postcode [" + StringUtils.join(powerPlantsIds, ',') + "] already exists in the system");
 //            }
+            if (requestDTOS.size() == 0) {
+                throw new PowerException("Invalid Request");
+            }
             List<PowerPlant> list = requestDTOS.stream().map(PowerPlant::new).collect(Collectors.toList());
             powerPlantRepository.saveAll(list);
             return ResponseUtils.responseGenerator(list.stream().map(l -> new PowerPlantResponseDTO(l.getUuid(), l.getName(), l.getPostcode(), l.getCapacity())).collect(Collectors.toList()), true, HttpStatus.CREATED);
+        } catch (PowerException powerException) {
+            logger.error("Error while inserting power plant " + powerException.getMessage());
+            return ResponseUtils.responseGenerator(Map.of("error", powerException.getMessage()), false, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             logger.error("Error while inserting power plant " + e.getMessage());
             return ResponseUtils.responseGenerator(Map.of("error", e.getMessage()), false, HttpStatus.INTERNAL_SERVER_ERROR);
