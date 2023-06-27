@@ -47,10 +47,10 @@ public class PowerPlantServiceImpl implements PowerPlantService {
             powerPlantRepository.saveAll(list);
             return ResponseUtils.responseGenerator(list.stream().map(l -> new PowerPlantResponseDTO(l.getUuid(), l.getName(), l.getPostcode(), l.getCapacity())).collect(Collectors.toList()), true, HttpStatus.CREATED);
         } catch (PowerException powerException) {
-            logger.error("Error while inserting power plant " + powerException.getMessage());
+            logger.error("Error while inserting power plant {}", powerException.getMessage());
             return ResponseUtils.responseGenerator(Map.of("error", powerException.getMessage()), false, HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            logger.error("Error while inserting power plant " + e.getMessage());
+            logger.error("Error while inserting power plant {}", e.getMessage());
             return ResponseUtils.responseGenerator(Map.of("error", e.getMessage()), false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,7 +67,7 @@ public class PowerPlantServiceImpl implements PowerPlantService {
             return ResponseUtils.responseGenerator(powerPlantRangeResponseDTO, true, HttpStatus.OK);
 
         } catch (Exception e) {
-            logger.error("Error cannot fetch powerPlant range with cause " + e.getMessage());
+            logger.error("Error cannot fetch powerPlant range with cause {}", e.getMessage());
             return ResponseUtils.responseGenerator(Map.of("error", e.getMessage()), false, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
