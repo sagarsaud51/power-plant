@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.sql.SQLException;
@@ -45,8 +46,16 @@ class PowerPlantServiceImplTest {
         List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
         list.add(new PowerPlantRequestDTO("Name2", "123125", 143));
         list.add(new PowerPlantRequestDTO("Name6", "1231468", 165));
+        when(powerPlantRepository.saveAll(anyList())).thenReturn(anyList());
         ResponseEntity res = powerPlantService.addPowerPlant(list);
         assertTrue(res.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    void addPowerPlant_WithInValidInput() {
+        List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
+        ResponseEntity res = powerPlantService.addPowerPlant(list);
+        assertEquals(res.getStatusCode(), HttpStatus.BAD_REQUEST);
     }
 
 

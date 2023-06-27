@@ -45,14 +45,6 @@ class PowerControllerTest {
         assertTrue(res.getStatusCode().is2xxSuccessful());
     }
 
-    @Test
-    void addPowerPlant_withEmptyArray() {
-        List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
-        ResponseEntity r = new ResponseEntity(new MessageResponseDTO<>(false, "Failed", null), HttpStatus.INTERNAL_SERVER_ERROR);
-        when(powerPlantService.addPowerPlant(list)).thenReturn(r);
-        ResponseEntity<MessageResponseDTO<List<PowerPlantResponseDTO>>> res = (ResponseEntity<MessageResponseDTO<List<PowerPlantResponseDTO>>>) powerController.addPowerPlant(list);
-        assertTrue(!res.getStatusCode().is2xxSuccessful());
-    }
 
     @Test
     void getPowerRangeByPostcode() {
