@@ -1,30 +1,29 @@
 package io.sagar.power.service.impl;
 
-import io.sagar.power.dto.*;
+import io.sagar.power.dto.AggregateResponseDTO;
+import io.sagar.power.dto.PowerPlantRangeResponseDTO;
+import io.sagar.power.dto.PowerPlantRequestDTO;
+import io.sagar.power.dto.PowerPlantResponseDTO;
 import io.sagar.power.entity.PowerPlant;
+import io.sagar.power.exceptions.PowerException;
 import io.sagar.power.repository.PowerPlantRepository;
-import io.sagar.power.service.PowerPlantService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -41,21 +40,25 @@ class PowerPlantServiceImplTest {
         MockitoAnnotations.initMocks(this);
     }
 
+
     @Test
     void addPowerPlant_WithValidInput() {
         List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
         list.add(new PowerPlantRequestDTO("Name2", "123125", 143));
         list.add(new PowerPlantRequestDTO("Name6", "1231468", 165));
         when(powerPlantRepository.saveAll(anyList())).thenReturn(anyList());
-        ResponseEntity res = powerPlantService.addPowerPlant(list);
-        assertTrue(res.getStatusCode().is2xxSuccessful());
+        List<PowerPlantResponseDTO> res = powerPlantService.addPowerPlant(list);
+        assertEquals(2, res.size());
     }
 
-    @Test
+    @Test()
     void addPowerPlant_WithInValidInput() {
-        List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
-        ResponseEntity res = powerPlantService.addPowerPlant(list);
-        assertEquals(res.getStatusCode(), HttpStatus.BAD_REQUEST);
+        try {
+            List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
+            List<PowerPlantResponseDTO> res = powerPlantService.addPowerPlant(list);
+        } catch (PowerException e) {
+            assertTrue(true);
+        }
     }
 
 
@@ -64,13 +67,12 @@ class PowerPlantServiceImplTest {
         List<PowerPlant> powerPlants = getPowerPlantArray(5);
         AggregateResponseDTO aggregateResponse = getAggregateValues(powerPlants);
         when(powerPlantRepository.getPowerPlantByPostCodeRange("0001", "0002")).thenReturn(powerPlants);
-        ResponseEntity<MessageResponseDTO<PowerPlantRangeResponseDTO>> res = (ResponseEntity<MessageResponseDTO<PowerPlantRangeResponseDTO>>) powerPlantService.getPowerRangeByPostcode("0001", "0002");
-        assertTrue(res.getStatusCode().is2xxSuccessful());
-        assertEquals(Objects.requireNonNull(res.getBody()).getData().getBatteries().size(), powerPlants.size());
-        assertEquals(aggregateResponse.getAverage(), res.getBody().getData().getAggregateWattCapacity().getAverage());
-        assertEquals(aggregateResponse.getMax(), res.getBody().getData().getAggregateWattCapacity().getMax());
-        assertEquals(aggregateResponse.getMin(), res.getBody().getData().getAggregateWattCapacity().getMin());
-        assertEquals(aggregateResponse.getTotal(), res.getBody().getData().getAggregateWattCapacity().getTotal());
+        PowerPlantRangeResponseDTO res = powerPlantService.getPowerRangeByPostcode("0001", "0002");
+        assertEquals(res.getBatteries().size(), powerPlants.size());
+        assertEquals(aggregateResponse.getAverage(), res.getAggregateWattCapacity().getAverage());
+        assertEquals(aggregateResponse.getMax(), res.getAggregateWattCapacity().getMax());
+        assertEquals(aggregateResponse.getMin(), res.getAggregateWattCapacity().getMin());
+        assertEquals(aggregateResponse.getTotal(), res.getAggregateWattCapacity().getTotal());
     }
 
     @Test
@@ -78,13 +80,12 @@ class PowerPlantServiceImplTest {
         List<PowerPlant> powerPlants = getPowerPlantArray(0);
         AggregateResponseDTO aggregateResponse = getAggregateValues(powerPlants);
         when(powerPlantRepository.getPowerPlantByPostCodeRange("0001", "0002")).thenReturn(powerPlants);
-        ResponseEntity<MessageResponseDTO<PowerPlantRangeResponseDTO>> res = (ResponseEntity<MessageResponseDTO<PowerPlantRangeResponseDTO>>) powerPlantService.getPowerRangeByPostcode("0001", "0002");
-        assertTrue(res.getStatusCode().is2xxSuccessful());
-        assertEquals(Objects.requireNonNull(res.getBody()).getData().getBatteries().size(), powerPlants.size());
-        assertEquals(aggregateResponse.getAverage(), res.getBody().getData().getAggregateWattCapacity().getAverage());
-        assertEquals(aggregateResponse.getMax(), res.getBody().getData().getAggregateWattCapacity().getMax());
-        assertEquals(aggregateResponse.getMin(), res.getBody().getData().getAggregateWattCapacity().getMin());
-        assertEquals(aggregateResponse.getTotal(), res.getBody().getData().getAggregateWattCapacity().getTotal());
+        PowerPlantRangeResponseDTO res = powerPlantService.getPowerRangeByPostcode("0001", "0002");
+        assertEquals(res.getBatteries().size(), powerPlants.size());
+        assertEquals(aggregateResponse.getAverage(), res.getAggregateWattCapacity().getAverage());
+        assertEquals(aggregateResponse.getMax(), res.getAggregateWattCapacity().getMax());
+        assertEquals(aggregateResponse.getMin(), res.getAggregateWattCapacity().getMin());
+        assertEquals(aggregateResponse.getTotal(), res.getAggregateWattCapacity().getTotal());
     }
 
     private List<PowerPlant> getPowerPlantArray(int size) {

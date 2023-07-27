@@ -1,6 +1,7 @@
 package io.sagar.power.controller;
 
 import io.sagar.power.dto.MessageResponseDTO;
+import io.sagar.power.dto.PowerPlantRangeResponseDTO;
 import io.sagar.power.dto.PowerPlantRequestDTO;
 import io.sagar.power.dto.PowerPlantResponseDTO;
 import io.sagar.power.service.impl.PowerPlantServiceImpl;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -39,18 +41,17 @@ class PowerControllerTest {
         List<PowerPlantRequestDTO> list = new ArrayList<PowerPlantRequestDTO>();
         list.add(new PowerPlantRequestDTO("Name2", "123125", 654));
         list.add(new PowerPlantRequestDTO("Name6", "1234", 165));
-        ResponseEntity r = new ResponseEntity(new MessageResponseDTO<>(true, "succes", null), HttpStatus.CREATED);
-        when(powerPlantService.addPowerPlant(list)).thenReturn(r);
-        ResponseEntity<MessageResponseDTO<List<PowerPlantResponseDTO>>> res = (ResponseEntity<MessageResponseDTO<List<PowerPlantResponseDTO>>>) powerController.addPowerPlant(list);
+        when(powerPlantService.addPowerPlant(list)).thenReturn(list.stream().map(l -> new PowerPlantResponseDTO(null, l.getName(), l.getPostcode(), l.getCapacity())).collect(Collectors.toList()));
+        ResponseEntity<List<PowerPlantResponseDTO>> res =  powerController.addPowerPlant(list);
         assertTrue(res.getStatusCode().is2xxSuccessful());
     }
 
 
     @Test
     void getPowerRangeByPostcode() {
-        ResponseEntity r = new ResponseEntity(new MessageResponseDTO<>(true, "Success", null), HttpStatus.OK);
-        when(powerPlantService.getPowerRangeByPostcode("001","002")).thenReturn(r);
-        var res  = powerController.getPowerRangeByPostcode("001", "002");
+        PowerPlantRangeResponseDTO powerPlantRangeResponseDTO =  new PowerPlantRangeResponseDTO();
+        when(powerPlantService.getPowerRangeByPostcode("001", "002")).thenReturn(powerPlantRangeResponseDTO);
+        var res = powerController.getPowerRangeByPostcode("001", "002");
         assertTrue(res.getStatusCode().is2xxSuccessful());
     }
 }
