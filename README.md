@@ -24,8 +24,8 @@ provider. It implements a REST API using Spring Boot framework with the followin
 - **Endpoint:** `/api/power`
 - **HTTP Method:** GET
 - **Query Parameters:**
-    - `startPostcode` (string): The start postcode of the range.
-    - `endPostcode` (string): The end postcode of the range.
+    - `fromPostcode` (string): The start postcode of the range.
+    - `toPostcode` (string): The end postcode of the range.
 - **Response:**
     - The response body will contain a JSON array of battery names that fall within the specified postcode range, sorted
       alphabetically.
